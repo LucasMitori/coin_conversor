@@ -2,24 +2,16 @@ import "reflect-metadata";
 import "dotenv/config";
 import path from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
+import { User } from "./entities/user.entity";
+import { Transaction } from "./entities/transactions.entity";
+import { initialMigration1676303316110 } from "./migrations/1676303316110-initialMigration";
+import { insertAdmUser1676303346976 } from "./migrations/1676303346976-insertAdmUser";
 
 const setDataSourceConfig = (): DataSourceOptions => {
   const entitiesPath: string = path.join(__dirname, "./entities/**.ts");
   const migrationsPath: string = path.join(__dirname, "./migrations/**.ts");
-  // const entitiesPath: string =
-  //   "/c/Users/lucas/Courses/Portfolio/Projetos_backend/coin_conversor/src/entities/**.{js,ts}";
-  // const migrationsPath: string =
-  //   "/c/Users/lucas/Courses/Portfolio/Projetos_backend/coin_conversor/src/migrations/**.{js,ts}";
 
   const nodeEnv = process.env.NODE_ENV;
-
-  console.log(entitiesPath);
-  console.log(migrationsPath);
-  // console.log(
-  //   Object.fromEntries(
-  //     Object.entries(process.env).filter(([k, v]) => k.includes("PG"))
-  //   )
-  // );
 
   if (nodeEnv === "production") {
     return {
@@ -48,10 +40,9 @@ const setDataSourceConfig = (): DataSourceOptions => {
     database: process.env.PGDATABASE,
     synchronize: false,
     logging: true,
-    entities: [entitiesPath],
-    migrations: [migrationsPath],
+    entities: [User, Transaction],
+    migrations: [initialMigration1676303316110, insertAdmUser1676303346976],
   };
 };
 
-console.log(setDataSourceConfig());
 export const AppDataSource = new DataSource(setDataSourceConfig());
