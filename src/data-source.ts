@@ -4,10 +4,22 @@ import path from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
 
 const setDataSourceConfig = (): DataSourceOptions => {
-  const entitiesPath: string = path.join(__dirname, "/entities/**.{js,ts}");
-  const migrationsPath: string = path.join(__dirname, "/migrations/**.{js,ts}");
+  const entitiesPath: string = path.join(__dirname, "./entities/**.ts");
+  const migrationsPath: string = path.join(__dirname, "./migrations/**.ts");
+  // const entitiesPath: string =
+  //   "/c/Users/lucas/Courses/Portfolio/Projetos_backend/coin_conversor/src/entities/**.{js,ts}";
+  // const migrationsPath: string =
+  //   "/c/Users/lucas/Courses/Portfolio/Projetos_backend/coin_conversor/src/migrations/**.{js,ts}";
 
   const nodeEnv = process.env.NODE_ENV;
+
+  console.log(entitiesPath);
+  console.log(migrationsPath);
+  // console.log(
+  //   Object.fromEntries(
+  //     Object.entries(process.env).filter(([k, v]) => k.includes("PG"))
+  //   )
+  // );
 
   if (nodeEnv === "production") {
     return {
@@ -41,4 +53,5 @@ const setDataSourceConfig = (): DataSourceOptions => {
   };
 };
 
+console.log(setDataSourceConfig());
 export const AppDataSource = new DataSource(setDataSourceConfig());
